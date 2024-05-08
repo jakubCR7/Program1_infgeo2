@@ -6,12 +6,12 @@ Program umożliwia implementację transformacji geodezyjnych zgodnie z potrzebam
 Program został stworzony z użyciem programu Python 3.11.5, zaimporotwana została biblioteka NumPy, pozwalająca na wykonywanie obliczeń numerycznych i naukowych. Program został napisany w dla systemu operacyjnego Microsoft Windows 10 PRO i wyższych.
 
 ## Funkcje programu:
-**Użytkownik wybiera spośród dostępnych elipsoid:**
-<br>
+**Użytkownik wybiera spośród dostępnych elipsoid:** <br>
 GRS80<br>
 WGRS84<br>
 Krasowski <br>
-**Użytkownik wybiera spośród dostępnych transformacji:**
+
+**Użytkownik wybiera spośród dostępnych transformacji:** <br>
  1 = X, Y, Z --> phi, lam, h <br>
  2 = phi, lam, h --> X, Y, Z <br>
  3 = X, Y, Z --> neu <br>
