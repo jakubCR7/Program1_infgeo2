@@ -10,19 +10,13 @@ Program został stworzony z użyciem programu Python 3.11.5, zaimporotwana zosta
 <br>
 GRS80<br>
 WGRS84<br>
-Krasowski
-
-<br>
+Krasowski <br>
 **Użytkownik wybiera spośród dostępnych transformacji:**
-<br>
-''' 
  1 = X, Y, Z --> phi, lam, h <br>
  2 = phi, lam, h --> X, Y, Z <br>
  3 = X, Y, Z --> neu <br>
  4 = BL --> X2000, Y2000 <br>
- 5 = BL --> X92, Y92
-'''
-<br>
+ 5 = BL --> X92, Y92<br>
 ### Działanie programu:
 Uruchamiając program Python wymagane jest również podanie nazwy pliku ze współrzędnymi wraz z jego rozszerzeniem (((tutaj trzeba o nagłówku i zerach wpisać))). Następnie, zgodnie z instrukcjami programu należy wybrać elipsoidę. Następnie, poprzez wpisanie liczby od 1 do 5, dokonujemy wyboru transformacji. Opcje, spośród których dokonujemy wyboru są podane powyżej w punkcje **Funkcje programu**.
 
