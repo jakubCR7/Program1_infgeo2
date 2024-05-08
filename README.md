@@ -38,6 +38,7 @@ Przy zastosowaniu prawidłowej ścieżki i odpowiednich poleceń program powinie
 **program zapisał plik o nazwie "nazwapliku.txt" ze współrzędnymi geodezyjnymi w bierzącym folderze**
 #### Przykładowe użycie pliku:
 Aby program zadziałał, dane w pliku muszą spełniać wyżej przedstawione wymogi, można zweryfikować za pomocą przykładowych plików umieszczonych na stronie.<br>
+
 Dane wejściowe:'wsp_inp.txt'<br>
 Pod nagłówkiem dane zapisane są w trzech kolumnach, pierwsza to współrzędne X, druga to współrzędne Y, a trzecia to wysokość Z, wszystkie wartości podane w metrach.<br>
 
