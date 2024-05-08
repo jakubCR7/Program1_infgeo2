@@ -276,7 +276,7 @@ if __name__ == "__main__":
                 f.write(f',')
             f.write(f'\n')
         f.close()
-        print('program zapisał plik o nazwie "phi_lam_h.txt" ze współrzędnymi geodezyjnymi w bierzącym folderze')
+        print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi geodezyjnymi w bierzącym folderze')
     elif info == '2':
         if info == '2':
             phi = lista[:,0]; lam = lista[:,1]; h = lista[:,2]
@@ -306,7 +306,7 @@ if __name__ == "__main__":
                     r.write(f',')
                 r.write(f'\n')
             r.close()
-            print('program zapisał plik o nazwie "X_Y_Z.txt" ze współrzędnymi X, Y, Z w bierzącym folderze')
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y, Z w bierzącym folderze')
     elif info == '3':
         if info == '3':
             print('podaj x0:')
@@ -345,7 +345,7 @@ if __name__ == "__main__":
                     r.write(f',')
                 r.write(f'\n')
             r.close()
-            print('program zapisał plik o nazwie "NEU.txt" ze współrzędnymi N, E, U w bierzącym folderze')
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi N, E, U w bierzącym folderze')
     elif info == '4':
         if info == '4':
             phi = lista[:,0]; lam = lista[:,1]
@@ -386,7 +386,7 @@ if __name__ == "__main__":
                     r.write(f',')
                 r.write(f'\n')
             r.close()
-            print('program zapisał plik o nazwie "X_Y_2000.txt" ze współrzędnymi X, Y w układzie PL-2000 w bierzącym folderze')
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y w układzie PL-2000 w bierzącym folderze')
     elif info == '5':
         if info == '5':
             phi = lista[:,0]; lam = lista[:,1]
@@ -413,5 +413,5 @@ if __name__ == "__main__":
                     r.write(f',')
                 r.write(f'\n')
             r.close()
-            print('program zapisał plik o nazwie "X_Y_92.txt" ze współrzędnymi X, Y w układzie PL-92 w bierzącym folderze')
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y w układzie PL-92 w bierzącym folderze')
     
