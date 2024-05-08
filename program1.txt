@@ -121,4 +121,42 @@ class Transformacje:
         x2000 = xgk * 0.999923
         y2000 = ygk * 0.999923 + 500000 + nr * 1000000
         return x2000, y2000
+    def transformacja_neu(self, X, Y, Z, x0, y0, z0):
+        '''
+        Funkcja zamienia współrzędne ortokartezjańskie punktu, na wpółrzędne horyzontalne.
+        Funkcja przyjmuje wartosci srodka układu oraz współrzędne ortokartezjańskie punktu.
+
+        Parameters
+        ----------
+        X, Y, Z : FLOAT 
+        
+        współrzędne ortokartezjańskie punktu
+        
+        x0, y0, z0 : FLOAT 
+        
+        współrzędne ortokartezjańskie srodka układu
+
+        Returns
+        -------
+        N : FLOAT
+            Northing - przesunięcie w kierunku północnym względem srodka układu .
+        E : FLOAT
+            Easting - przesunięcie w kierunku wschodnim względem srodka układu.
+        U : Float
+            UP - przesunięcie w górę względem srodka układu.
+
+        '''
+        phi, lam, _ = self.hirvonen(x0, y0, z0)
+        phi = phi/180 * pi
+        lam = lam/180 * pi
+        R = array([[-sin(lam), -sin(lam) * cos(lam), cos(phi) * cos(lam)],
+                      [cos(lam), cos(lam)* sin(lam), cos(phi) * sin(lam)],
+                      [0, cos(phi) , sin(phi)]])
+        dXYZt = array([[X - x0],
+                      [Y - y0],
+                      [Z - z0]])
+        Rneu1 = R
+        E, N, U = Rneu1.T @ dXYZt
+        
+        return N, E, U
     
