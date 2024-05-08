@@ -66,4 +66,13 @@ class Transformacje:
             lam = self.deg2dms(degrees(lam))
             return f"{lat[0]:02d}:{lat[1]:02d}:{lat[2]:.2f}", f"{lon[0]:02d}:{lon[1]:02d}:{lon[2]:.2f}", f"{h:.3f}"
         else:
-            raise NotImplementedError(f"{output} - output format not defined")
+            raise NotImplementedError(f"{output} - output format not defined") 
+       
+    def phi_lam_XYZ(self, phi, lam, h, output = 'dec_degree'):
+        phi = phi/180 * pi
+        lam = lam/180* pi
+        N = self.a/(1 - self.ecc2 * sin(phi)**2)**(1/2)
+        X = (N+h) * cos(phi) * cos(lam)
+        Y = (N+h) * cos(phi) * sin(lam)
+        Z = (N*(1-self.ecc2)+h) * sin(phi)
+        return X, Y, Z
