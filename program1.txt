@@ -1,6 +1,20 @@
 from numpy import *
 import sys
 def is_float(string):
+    '''
+    Funkcja sprawdza czy zadany ciąg znaków string może być zamieniony na liczbę typu float
+
+    Parameters
+    ----------
+    string : str
+        Łańcuch znaków do sprawdzenia.
+
+    Returns
+    -------
+    bool
+        True - jeżeli możliwe do zamiany lub False w przecienym wypadku.
+
+    '''
     try:
         float(string)
         return True
