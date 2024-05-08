@@ -3,7 +3,7 @@
 Program umożliwia implementację transformacji geodezyjnych zgodnie z potrzebami użytkownika.
 
 ## Wymagania do obsługi programu:
-Program został stworzony z użyciem programu Python 3.11.5, zaimporotwana została biblioteka NumPy, pozwalająca na wykonywanie obliczeń numerycznych i naukowych. Program został napisany w dla systemu operacyjnego Microsoft Windows 10 PRO i wyższych.
+Program został stworzony z użyciem programu Python 3.11.5, zaimporotwana została biblioteka NumPy, pozwalająca na wykonywanie obliczeń numerycznych i naukowych. Program został napisany w dla systemu operacyjnego Microsoft Windows 10 PRO i wyższych. Konieczna jest instalacja programu python.exe oraz biblioteki NumPy w konsoli.
 
 ## Funkcje programu:
 **Użytkownik wybiera spośród dostępnych elipsoid:** <br>
@@ -18,7 +18,7 @@ Krasowski <br>
  4 = BL --> X2000, Y2000 <br>
  5 = BL --> X92, Y92<br>
 ### Działanie programu:
-Uruchamiając program Python wymagane jest również podanie nazwy pliku ze współrzędnymi wraz z jego rozszerzeniem (((tutaj trzeba o nagłówku i zerach wpisać))). Następnie, zgodnie z instrukcjami programu należy wybrać elipsoidę. Następnie, poprzez wpisanie liczby od 1 do 5, dokonujemy wyboru transformacji. Opcje, spośród których dokonujemy wyboru są podane powyżej w punkcje **Funkcje programu**.
+Uruchamiając program Python wymagane jest również podanie nazwy pliku ze współrzędnymi wraz z jego rozszerzeniem (((tutaj trzeba o nagłówku i zerach wpisać))). Następnie, zgodnie z instrukcjami programu należy wybrać elipsoidę. Następnie, poprzez wpisanie liczby od 1 do 5, dokonujemy wyboru transformacji. Załączony plik z danymi musi być zgodny z wybraną transformacją tj. dla transformacji **1, 3** plik z danymi powinien zawierać współrzędne ortokartezjańskie, a dla transformacji **2, 4, 5** współrzędne geodezyjne. W przeciwnym wypadku uzyskane wyniki nie będą poprawne. Opcje, spośród których dokonujemy wyboru są podane powyżej w punkcje **Funkcje programu**.
 
 ### Przykładowe użycie programu:
 1. Użytkownik uruchamia konsolę CMD (wiersz poleceń) w folderze, w którym znajduje się program.<br>
