@@ -22,3 +22,6 @@ Krasowski
 '''
 ### Działanie programu:
 Uruchamiając program Python wymagane jest również podanie nazwy pliku ze współrzędnymi wraz z jego rozszerzeniem (((tutaj trzeba o nagłówku i zerach wpisać))). Następnie, zgodnie z instrukcjami programu należy wybrać elipsoidę. Następnie, poprzez wpisanie liczby od 1 do 5, dokonujemy wyboru transformacji. Opcje, spośród których dokonujemy wyboru są podane powyżej w punkcje **Funkcje programu**.
+
+### Przykładowe użycie programu:
+
