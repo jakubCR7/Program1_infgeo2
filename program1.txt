@@ -265,7 +265,7 @@ if __name__ == "__main__":
         lista_lam = array(lista_lam)
         lista_h = array(lista_h)
         dane_wyjsc = column_stack((lista_phi,lista_lam,lista_h))
-        f = open(sys.arv[2],'w')
+        f = open(sys.argv[2],'w')
         f.write(f'  phi [dec]     lam [dec]    h[m] \n')
         f.write(f'----------------------------------\n')
         for i in dane_wyjsc:
@@ -295,7 +295,7 @@ if __name__ == "__main__":
             lista_y = array(lista_y)
             lista_z = array(lista_z)
             dane_wyjsc = column_stack((lista_x,lista_y,lista_z))
-            r = open(sys.arv[2],'w')
+            r = open(sys.argv[2],'w')
             r.write(f'   X[m]            Y[m]            Z[m] \n')
             r.write(f'----------------------------------------\n')
             for i in dane_wyjsc:
@@ -334,7 +334,7 @@ if __name__ == "__main__":
             lista_y = array(lista_y)
             lista_z = array(lista_z)
             dane_wyjsc = column_stack((lista_x,lista_y,lista_z))
-            r = open(sys.arv[2],'w')
+            r = open(sys.argv[2],'w')
             r.write(f'   N[m]            E[m]            U[m] \n')
             r.write(f'------------------------------------\n')
             for i in dane_wyjsc:
@@ -375,7 +375,7 @@ if __name__ == "__main__":
             lista_x2000 = array(lista_x2000)
             lista_y2000 = array(lista_y2000)
             dane_wyjsc = column_stack((lista_x2000,lista_y2000))
-            r = open(sys.arv[2],'w')
+            r = open(sys.argv[2],'w')
             r.write(f'   X[m]            Y[m]  \n')
             r.write(f'-----------------------------\n')
             for i in dane_wyjsc:
