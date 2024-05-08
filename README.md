@@ -8,19 +8,18 @@ Program został stworzony z użyciem programu Python 3.11.5, zaimporotwana zosta
 ## Funkcje programu:
 **Użytkownik wybiera spośród dostępnych elipsoid:**
 <br>
-'''
-GRS80
-WGRS84
+GRS80<br>
+WGRS84<br>
 Krasowski
-'''
+
 <br>
 **Użytkownik wybiera spośród dostępnych transformacji:**
 <br>
 ''' 
- 1 = X, Y, Z --> phi, lam, h 
- 2 = phi, lam, h --> X, Y, Z 
- 3 = X, Y, Z --> neu 
- 4 = BL --> X2000, Y2000 
+ 1 = X, Y, Z --> phi, lam, h <br>
+ 2 = phi, lam, h --> X, Y, Z <br>
+ 3 = X, Y, Z --> neu <br>
+ 4 = BL --> X2000, Y2000 <br>
  5 = BL --> X92, Y92
 '''
 <br>
