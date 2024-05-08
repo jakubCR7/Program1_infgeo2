@@ -25,8 +25,8 @@ Uruchamiając program Python wymagane jest również podanie nazwy pliku ze wsp�
 
 ### Przykładowe użycie programu:
 1. Użytkownik uruchamia konsolę CMD (wiersz poleceń) w folderze, w którym znajduje się program.<br>
-***cd C:\Users\admin\Desktop\Program1***
-2. Program uruchamia się poprzez wpisanie poleceń ***python**, po spacji nazwa programu ***Program1.txt***, oraz po spacji nazwa pliku z danymi np. ***wsp_int.txt***
+**cd C:\Users\admin\Desktop\Program1**
+2. Program uruchamia się poprzez wpisanie poleceń **python**, po spacji nazwa programu **Program1.txt**, oraz po spacji nazwa pliku z danymi np. **wsp_int.txt**
 3. Wymagania wobec pliku z danymi:
    - nagłówek może być dowolny
    - separatorem danych jest przecinek ','
@@ -34,5 +34,8 @@ Uruchamiając program Python wymagane jest również podanie nazwy pliku ze wsp�
    - przykładowy wygląd pliku: <br>
    ----- X ----- Y ----- Z ----- <br>
    1009.9999,1008.8889,107.777
- 4. Wybór elipsoidy np. ***GRS80***
- 5. Wybór transformacji poprzez wskazanie odpowiedniej cyfry, np. X,Y,Z-->neu ***1***
+ 4. Wybór elipsoidy np. **GRS80**
+ 5. Wybór transformacji poprzez wskazanie odpowiedniej cyfry, np. X,Y,Z-->neu **1**
+
+Przy zastosowaniu prawidłowej ścieżki i odpowiednich poleceń program powinien się uruchomić, następnie wyświetlić komunikat:<br>
+**program zapisał plik o nazwie "nazwapliku.txt" ze współrzędnymi geodezyjnymi w bierzącym folderze**
