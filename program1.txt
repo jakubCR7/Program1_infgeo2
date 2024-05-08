@@ -246,7 +246,6 @@ if __name__ == "__main__":
                 listaX = [0,0,0]
         lista = vstack((lista,listaX))
     lista = array(lista)
-    print(lista)
     f.close()
     if info == '1':
         X = lista[:,0]; Y = lista[:,1]; Z = lista[:,2]
