@@ -1,0 +1,78 @@
+\documentclass[10pt,a4paper]{article}
+
+% ------------------------- PREAMBUŁA -------------------   % stała ścieżka względna do katalogu z  obrazkami.
+\usepackage{graphicx}
+%\input{settings/packages}  
+%\graphicspath{{images/}} 
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage[polish]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{booktabs}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{textgreek}
+\usepackage{geometry}
+\usepackage{pdflscape}
+\usepackage{pdfpages}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+%--- METADANE
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{gik.png}
+%\newcommand{\logoGIK}{photos\gik.png}
+%\end{figure}
+
+\title{Transformacje}
+\author{Adam Buława, numer indeksu 325727 \\ Jakub Fajfer numer indeksu 325742}
+
+\begin{document}
+	\maketitle{Transformacje} %utworzy stronę tytułową
+\tableofcontents
+\newpage	
+\section{Wprowadzenie}
+
+\subsection{Cel ćwiczenia}
+Cel ćwiczenia to utworzenie programu implementującego podane transformacje geodezyjne:
+\begin{itemize}
+	\item XYZ (geocentryczne) -> BLH
+	\item  BLH -> XYZ 
+	\item  XYZ -> NEUp
+	\item  BL(GRS80, WGS84, ew. Krasowski) -> 2000 
+	\item  BL(GRS80, WGS84, ew. Krasowski) -> 1992
+\end{itemize}
+przy wykorzystaniu zdalnego, publicznego repozytorium obsługiwalnego przez dwie osoby. Program miał zawierać odpowiednie klauzule, usprawniające i ułatwiające działanie programu, umożliwiać podawanie argumentów przy wywołaniu, oraz wczytywać dane z pliku wejściowego. Efektem końcowym działania programu powinien być plik wynikowy zawierający żądane dane.
+\subsection{Wykorzystane programy}
+Do pracy nad skrytem, opisem przebiegu ćwiczenia i instrukcją do aplikacji zostały użyte programy:
+\begin{itemize}
+	\item Środowisko programistyczne Spyder, Python 3.11
+	\item TeXstudio jako edytor ułatwiający tworzenie dokumentów
+	\item GitHub, jako serwis internetowy do tworzenia zdalnego repozytorium
+\end{itemize}
+\section{Etapy pracy}
+\subsection{Utworzenie zdalnego repozytorium}
+Pracę rozpoczęliśmy od utworzenia zdalnego repozytorium, które umożliwia edycję plików o różnych rozszerzeniach z pozycji różnych urządzeń. Repozytorium powstało w aplikacji GitHub.
+\subsection{Kod programu}
+OPIS CO JEST GRANE PO KOLEI, 
+\begin{itemize}
+	\item po co i co to TRANSFORMATIONS plus działanie bibliotek, instalacja itp
+	\item użycie funkcji i algorytmów z gw di transformacji, przykład (nazwafunkcji(argumenty)), jakie biblioteki i użyte bo bardzo ułatwiają pracę oraz estetykę 
+	\item {if name == main} co to i po co, przekazywanie arugmentów przez wiersz poleceń, wbijanie pliku do wiersza poleceń, nazwanie pliku wyjściowego
+	\item ochrona przed błędami w stylu to nie działa bo cośtam, TRZEBA ERRORY DOROBIĆ zastosowanie klauzuli 'try' - 'except (...)Error' z oddaniem komunikatu w przypadku 'except'. 
+	\item próby i wklepywanie plików tekstowych, zgodnie z naszym życzeniem:)
+\end{itemize}
+\subsection{Dokumentacja ćwiczenia}
+Instrukcja do programu została zapisana w pliku Read.me w zdalnym repozytorium.
+\section{Podsumowanie}
+\subsection{Umiejętności nabyte podczas pracy nad projektem}
+\subsection{Trudności i obserwacje}
+\subsection{Wnioski}
+\subsection{Link do repozytorium}
+
+
+\end{document}
