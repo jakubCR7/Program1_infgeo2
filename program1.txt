@@ -31,7 +31,7 @@ class Transformacje:
         elif model == "Krasowski":
             self.a = 6378245.0
             self.b = 6356863.01877
-	    print('Uwaga!\n Wybrany model elipsoidy zwraca niepoprawne wartości dla transformacji 4 i 5.')
+            print('Uwaga!\n Wybrany model elipsoidy zwraca niepoprawne wartości dla transformacji 4 i 5.')
         else:
             raise NotImplementedError(f"{model} model not implemented")
         self.flat = (self.a - self.b) / self.a
@@ -414,4 +414,5 @@ if __name__ == "__main__":
                 r.write(f'\n')
             r.close()
             print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y w układzie PL-92 w bierzącym folderze')
-    
+    else:
+        raise NotImplementedError(f"{info} - output format not defined")
