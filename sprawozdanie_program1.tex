@@ -60,7 +60,7 @@ Pracę rozpoczęliśmy od utworzenia zdalnego repozytorium, które umożliwia ed
 	GK2000 i GK92 to dwie podobnie działające funkcje. Jako argumenty przyjmują parametry elipsoidy oraz współrzędne geodezyjne punktu fi i lambda. Funkcje te najpierw zamieniają współrzędne geodezyjne na współrzędne na płaszczyźnie Gaussa-Krugera, a następnie wykorzystując odpowiednie matryce przeliczają te współrzędne odpowiednio na układy PL- 2000 i PL - 92.
 	\item Następnie przechodzimy do zasadniczej części naszego programu "main". Na początku program wyświetla dostępne do wyboru modele i tworzony jest obiekt biorący dane z wybranego przez użytkownika modelu. Następnie wyświetlane są funkcje dostępne w programie, które użytkownik może wybrać. Dzięki zastosowaniu rzędu elif w dalszej części maina w zależności od wybranej przez użytkownika cyfry wykonywana jest odpowiednia transformacja. Nasz program pobiera nazwe pliku wejściowego oraz wyjściowego z wiersza poleceń dzięki zastosowaniu metody sys.argv. Uruchamiając program użytkownik musi podaj nazwę pliku z danymi oraz rządaną nazwę pliku wyjściowego.\newline
 	Dzięki zastosowaniu pętli oraz funkcji sprawdzającej czy dany ciąg znaków jest liczbą float przy wczytywaniu danych plik wejściowy może mieć dowolną wielkość nagłówka, jednak dane muszą być rozdzielone przecinkami. (program zamienia każdą linijkę nie będącą danymi w listę z trzema zerami, które na późniejszym etapie nie są brane pod uwagę )
-	\item Program zwraca błąd w przypadku podania niewłaściwej nazwy elipsoidy oraz w przypadku podania nieistniejącego numeru transformacji.Użyliśmy do teg metody raise. Wyświetlane jest również ostrzeżenie o nieprawidłowym działaniu transformacji do układów PL-2000 i PL-92 w przypadku wybrania elipsoidy Krassowskiego. Podczas używania programu należy uważać na podawanie do wczytania odpowiednich danych do odpowiednich transformacji, co opisaliśmy szerzej w pliku Read.me dołączonym do projektu.
+	\item Program zwraca błąd w przypadku podania niewłaściwej nazwy elipsoidy oraz w przypadku podania nieistniejącego numeru transformacji.Użyliśmy do teg metody raise. Wyświetlane jest również ostrzeżenie o nieprawidłowym działaniu transformacji do układów PL-2000 i PL-92 w przypadku wybrania elipsoidy Krassowskiego. Podczas używania programu należy uważać na podawanie do wczytania odpowiednich danych do odpowiednich transformacji, co opisaliśmy szerzej w pliku README.md dołączonym do projektu.
 	\item Nasz program przetestowaliśmy wprowadzając różne pliki z danymi i przeprowadzając wszystkie dostępne w programie transformacje.
 \end{itemize}
 \subsection{Dokumentacja ćwiczenia}
@@ -75,6 +75,6 @@ Zastosowanie użytych programów do stworzenia aplikacji ułatwiło pracę, oraz
 \subsection{Link do repozytorium}
 Rezultat pracy nad programem został zapisany w zdalnym repozytorium, do którego link znajduje się poniżej:
 \newline
-\href{https://github.com/jakubCR7/Program1_infgeo2.git}{https://github.com/jakubCR7/Program1_infgeo2.git}
+\url{https://github.com/jakubCR7/Program1_infgeo2.git}%{https://github.com/jakubCR7/Program1_infgeo2.git}
 
 \end{document}
