@@ -415,4 +415,4 @@ if __name__ == "__main__":
             r.close()
             print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y w układzie PL-92 w bierzącym folderze')
     else:
-        raise NotImplementedError(f"{info} - output format not defined")
+        raise NotImplementedError(f"{info} - Do podanego numeru nie ma przypisanej transformacji. Ponownie uruchom program i wybierz transformację pomiędzy 1 i 5.")
