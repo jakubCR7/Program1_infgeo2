@@ -49,5 +49,5 @@ W pliku wyjściowym dane są rozłożone tak, jak w pliku wejściowym.
 1. W przypadku pliku o odpowiedniej strukturze, jednak z błędnymi danymi (np. phi lam h zamiast XYZ) program nie wyrzuci błędu, tylko nieprawidłowe wartości
 2. W przypadku transformacji **4, 5** przy elipsoidzie Krassowskiego program poda błędne wartości jednak wcześniej wyświetli stosowną informację na ekranie.
 ### Autorzy programu:
-Adam Buława
+Adam Buława <br>
 Jakub Fajfer
