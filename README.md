@@ -3,7 +3,7 @@
 Program umożliwia implementację transformacji geodezyjnych zgodnie z potrzebami użytkownika.
 
 ## Wymagania do obsługi programu:
-Program został stworzony z użyciem programu Python 3.11.5, zaimporotwana została biblioteka NumPy, pozwalająca na wykonywanie obliczeń numerycznych i naukowych. Program został napisany w dla systemu operacyjnego Microsoft Windows 10 PRO i wyższych. Konieczna jest instalacja programu python.exe oraz biblioteki NumPy w konsoli.
+Program został stworzony z użyciem programu Python 3.11.5, zaimporotwana została biblioteka NumPy, pozwalająca na wykonywanie obliczeń numerycznych i naukowych. Program został napisany dla systemu operacyjnego Microsoft Windows 10 PRO i wyższych. Konieczna jest instalacja programu python.exe oraz biblioteki NumPy w konsoli.
 
 ## Funkcje programu:
 **Użytkownik wybiera spośród dostępnych elipsoid:** <br>
@@ -31,7 +31,7 @@ Uruchamiając program Python wymagane jest również podanie nazwy pliku ze wsp�
    - przykładowy wygląd pliku: <br>
    ----- X ----- Y ----- Z ----- <br>
    1009.9999,1008.8889,107.777
- 4. Wybór elipsoidy poprzez wpisanie w konsolę, np. **grs80**
+ 4. Wybór elipsoidy poprzez wpisanie w konsolę, według poleceń na ekranie np. **grs80**
  5. Wybór transformacji poprzez wpisanie w konsolę odpowiedniej cyfry, według poleceń na ekranie, np. X,Y,Z-->neu **1**
 
 Przy zastosowaniu prawidłowej ścieżki i odpowiednich poleceń program powinien się uruchomić, następnie wyświetlić komunikat:<br>
