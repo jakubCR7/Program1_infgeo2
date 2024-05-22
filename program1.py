@@ -1,0 +1,418 @@
+from numpy import *
+import sys
+def is_float(string):
+    '''
+    Funkcja sprawdza czy zadany ciąg znaków string może być zamieniony na liczbę typu float
+
+    Parameters
+    ----------
+    string : str
+        Łańcuch znaków do sprawdzenia.
+
+    Returns
+    -------
+    bool
+        True - jeżeli możliwe do zamiany lub False w przecienym wypadku.
+
+    '''
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+class Transformacje:
+    def __init__(self, model: str = 'wgs80'):
+        if model == "wgs84":
+            self.a = 6378137.0 # semimajor_axis
+            self.b = 6356752.31424518 # semiminor_axis
+        elif model == "grs80":
+            self.a = 6378137.0
+            self.b = 6356752.31414036
+        elif model == "Krasowski":
+            self.a = 6378245.0
+            self.b = 6356863.01877
+            print('Uwaga!\n Wybrany model elipsoidy zwraca niepoprawne wartości dla transformacji 4 i 5.')
+        else:
+            raise NotImplementedError(f"{model} model not implemented")
+        self.flat = (self.a - self.b) / self.a
+        self.ecc = sqrt(2 * self.flat - self.flat ** 2) # eccentricity  WGS84:0.0818191910428 
+        self.ecc2 = (2 * self.flat - self.flat ** 2) # eccentricity**2
+        
+    def hirvonen(self, X, Y, Z, output = 'dec_degree'):
+        """
+        Algorytm Hirvonena - algorytm transformacji współrzędnych ortokartezjańskich (x, y, z)
+        na współrzędne geodezyjne długość szerokość i wysokośc elipsoidalna (phi, lam, h). Jest to proces iteracyjny. 
+        W wyniku 3-4-krotneej iteracji wyznaczenia wsp. phi można przeliczyć współrzędne z dokładnoscią ok 1 cm.     
+        Parameters
+        ----------
+        X, Y, Z : FLOAT
+             współrzędne w układzie orto-kartezjańskim, 
+
+        Returns
+        -------
+        lat
+            [stopnie dziesiętne] - szerokość geodezyjna
+        lon
+            [stopnie dziesiętne] - długośc geodezyjna.
+        h : TYPE
+            [metry] - wysokość elipsoidalna
+        output [STR] - optional, defoulf 
+            dec_degree - decimal degree
+            dms - degree, minutes, sec
+        """
+
+            # promien rownoleznika
+        p = sqrt(X**2 + Y**2)
+            # przyblizona wartosc phi
+        phi = arctan(Z/(p*(1-self.ecc2)))
+
+        N = self.a/(1 - self.ecc2 * sin(phi)**2)**(1/2) 
+            # obliczamy wartosc N
+        while True:
+            phi_poprzednie = phi
+                #print(phi)
+                # obliczenie wysokosci
+            h = p/cos(phi_poprzednie) - N
+                #obliczenie poprawionej wartosci phi
+            phi = arctan(Z/p*((N*(1-self.ecc2)+h)/(N+h))**(-1))
+            #warunek
+            if abs(phi -phi_poprzednie)<(0.000001/3600*pi/180):
+                break
+            N= self.a/(1-self.ecc2*sin(phi)**2)**(1/2)
+            h= p/cos(phi)-N
+            lam= arctan2(Y,X)
+        if output == "dec_degree":
+            return degrees(phi), degrees(lam), h 
+        elif output == "dms":
+            phi = self.deg2dms(degrees(phi))
+            lam = self.deg2dms(degrees(lam))
+            return f"{lat[0]:02d}:{lat[1]:02d}:{lat[2]:.2f}", f"{lon[0]:02d}:{lon[1]:02d}:{lon[2]:.2f}", f"{h:.3f}"
+        else:
+            raise NotImplementedError(f"{output} - output format not defined") 
+       
+    def phi_lam_XYZ(self, phi, lam, h, output = 'dec_degree'):
+        phi = phi/180 * pi
+        lam = lam/180* pi
+        N = self.a/(1 - self.ecc2 * sin(phi)**2)**(1/2)
+        X = (N+h) * cos(phi) * cos(lam)
+        Y = (N+h) * cos(phi) * sin(lam)
+        Z = (N*(1-self.ecc2)+h) * sin(phi)
+        return X, Y, Z
+    def Gk2000(self, lam, phi, lam_0, nr):
+        '''
+        Funkcja transformująca współrzędne geodezyjne fi i lambda do układu PL2000
+        Na początku przekształca współrzędne punktu do układu Gaussa-Krugera, a następnie
+        korzystając z matrycy zamienia je na układ PL2000
+
+        Parameters
+        ----------
+        lam : FLOAT
+            Długosc geodezyjna punktu podana w stopniach.
+        phi : FLOAT
+            Szerokosc geodezyjna punktu podana w stopniach.
+        lam_0 : FLOAT
+            Połdunik osiowy układu PL2000.
+        nr : FLOAT
+            Numer południka.
+
+        Returns
+        -------
+        x2000 : FLOAT
+            Współrzędna X w układzie PL2000.
+        y2000 : FLOAT
+            Współrzędna Y w układzie PL2000.
+
+        '''
+        lam = lam/180 * pi
+        phi = phi/180 * pi
+        lam_0 = lam_0/180 * pi
+        
+        b2 = self.a**2 * (1-self.ecc2)
+        e2p = (self.a **2 - b2)/b2
+        n2 = e2p * cos(phi)**2
+        t = tan(phi)
+        dlam = lam - lam_0
+        N = self.a/(1 - self.ecc2 * sin(phi)**2)**(1/2)
+        A0 = 1 - (self.ecc2/4) - ((3 * self.ecc2**2)/64) - ((5 * self.ecc2 * self.ecc2**2)/256)
+        A2 = 3/8 * (self.ecc2 + self.ecc2**2/4 + 15 * self.ecc2**3/128)
+        A4 = 15/256 * (self.ecc2**2 + (3 * self.ecc2 * self.ecc2**2)/4)
+        A6 = (35 * self.ecc2 * self.ecc2**2)/3072
+        sigma = self.a * (A0 * phi - A2 * sin(2 * phi) + A4 * sin(4 * phi) - A6 * sin(6 * phi))
+        xgk = sigma + (dlam**2)/2 * N * sin(phi) * cos(phi) * (1 + (dlam**2)/12 * cos(phi)**2 * (5 - t**2 + 9 * n2 + 4 * n2**2) + (dlam**4)/360 * cos(phi)**4 * (61 - 58 * t**2 + t**4 + 270 * n2 - 330 * n2 * t**2))
+        ygk = dlam * N * cos(phi) * (1 + (dlam**2)/6 * cos(phi)**2 * (1 - t**2 + n2) + (dlam**4)/120 * cos(phi)**4 * (5 - 18 * t**2 + t**4 + 14 * n2 - 58 * n2 * t**2))
+        x2000 = xgk * 0.999923
+        y2000 = ygk * 0.999923 + 500000 + nr * 1000000
+        return x2000, y2000
+
+    def Gk92(self, lam, phi):
+        '''
+        Funkcja transformująca współrzędne geodezyjne fi i lambda do układu PL1992
+        Na początku przekształca współrzędne punktu do układu Gaussa-Krugera, a następnie
+        korzystając ze wzoru zamienia je na układ PL1992
+
+        Parameters
+        ----------
+        lam : FLOAT
+            Długosc geodezyjna punktu podana w stopniach.
+        phi : FLOAT
+            Szerokosc geodezyjna punktu podana w stopniach.
+
+        Returns
+        -------
+        x92 : FLOAT
+            Współrzędna X w układzie 1992.
+        y92 : FLOAT
+            Współrzędna Y w układzie 1992.
+
+        '''
+        lam_0 = 19
+        lam_0 = lam_0/180 *pi
+        lam = lam/180 *pi
+        phi = phi /180 * pi
+        dlam = lam - lam_0
+        b2 = self.a**2 * (1-self.ecc2)
+        e2p = (self.a **2 - b2)/b2
+        n2 = e2p * cos(phi)**2
+        t = tan(phi)
+        N = self.a/(1 - self.ecc2 * sin(phi)**2)**(1/2)
+        A0 = 1 - (self.ecc2/4) - ((3 * self.ecc2**2)/64) - ((5 * self.ecc2 * self.ecc2**2)/256)
+        A2 = 3/8 * (self.ecc2 + self.ecc2**2/4 + 15 * self.ecc2**3/128)
+        A4 = 15/256 * (self.ecc2**2 + (3 * self.ecc2 * self.ecc2**2)/4)
+        A6 = (35 * self.ecc2 * self.ecc2**2)/3072
+        sigma = self.a * (A0 * phi - A2 * sin(2 * phi) + A4 * sin(4 * phi) - A6 * sin(6 * phi))
+        xgk = sigma + (dlam**2)/2 * N * sin(phi) * cos(phi) * (1 + (dlam**2)/12 * cos(phi)**2 * (5 - t**2 + 9 * n2 + 4 * n2**2) + (dlam**4)/360 * cos(phi)**4 * (61 - 58 * t**2 + t**4 + 270 * n2 - 330 * n2 * t**2))
+        ygk = dlam * N * cos(phi) * (1 + (dlam**2)/6 * cos(phi)**2 * (1 - t**2 + n2) + (dlam**4)/120 * cos(phi)**4 * (5 - 18 * t**2 + t**4 + 14 * n2 - 58 * n2 * t**2))
+        x92 = xgk * 0.9993 - 5300000
+        y92 = ygk * 0.9993 + 500000
+        return x92, y92
+    
+        
+
+    def transformacja_neu(self, X, Y, Z, x0, y0, z0):
+        '''
+        Funkcja zamienia współrzędne ortokartezjańskie punktu, na wpółrzędne horyzontalne.
+        Funkcja przyjmuje wartosci srodka układu oraz współrzędne ortokartezjańskie punktu.
+
+        Parameters
+        ----------
+        X, Y, Z : FLOAT 
+        
+        współrzędne ortokartezjańskie punktu
+        
+        x0, y0, z0 : FLOAT 
+        
+        współrzędne ortokartezjańskie srodka układu
+
+        Returns
+        -------
+        N : FLOAT
+            Northing - przesunięcie w kierunku północnym względem srodka układu .
+        E : FLOAT
+            Easting - przesunięcie w kierunku wschodnim względem srodka układu.
+        U : Float
+            UP - przesunięcie w górę względem srodka układu.
+
+        '''
+        phi, lam, _ = self.hirvonen(x0, y0, z0)
+        phi = phi/180 * pi
+        lam = lam/180 * pi
+        R = array([[-sin(lam), -sin(lam) * cos(lam), cos(phi) * cos(lam)],
+                      [cos(lam), cos(lam)* sin(lam), cos(phi) * sin(lam)],
+                      [0, cos(phi) , sin(phi)]])
+        dXYZt = array([[X - x0],
+                      [Y - y0],
+                      [Z - z0]])
+        Rneu1 = R
+        E, N, U = Rneu1.T @ dXYZt
+        
+        return N, E, U
+if __name__ == "__main__":
+    # utworzenie obiektu
+    print('podaj nazwe elipsoidy')
+    print('wybierz jedno z: \n grs80\n wgs84 \n Krasowski')
+    geo = Transformacje(model = input(str))
+    print('wybierz rodzaj transformacji (wpisz odpowiednia cyfre):\n 1 = X, Y, Z --> phi, lam, h \n 2 = phi, lam, h --> X, Y, Z \n 3 = X, Y, Z --> neu \n 4 = BL --> X2000, Y2000 \n 5 = BL --> X92, Y92')
+    f = open(sys.argv[1])
+    info = input(str)
+    dane = f.read()
+    dane = dane.split('\n')
+    lista =[0,0,0]
+    for i in dane:
+        w = i.split(',')
+        listaX = []
+        for j in w:
+            if is_float(j.strip('')) == True:
+                listaX.append(float(j))
+            else:
+                listaX = [0,0,0]
+        lista = vstack((lista,listaX))
+    lista = array(lista)
+    f.close()
+    if info == '1':
+        X = lista[:,0]; Y = lista[:,1]; Z = lista[:,2]
+        t=0
+        lista_phi = []
+        lista_lam = []
+        lista_h = []
+        while t < len(X):
+            if X[t] != 0:
+                phi, lam, h = geo.hirvonen(X[t], Y[t], Z[t])
+                lista_h.append(h)
+                lista_lam.append(lam)
+                lista_phi.append(phi)
+            t = t + 1
+        lista_phi = array(lista_phi)
+        lista_lam = array(lista_lam)
+        lista_h = array(lista_h)
+        dane_wyjsc = column_stack((lista_phi,lista_lam,lista_h))
+        f = open(sys.argv[2],'w')
+        f.write(f'  phi [dec]     lam [dec]    h[m] \n')
+        f.write(f'----------------------------------\n')
+        for i in dane_wyjsc:
+            for j in i:
+                f.write(f'{j:.9f}')
+                if j == i[-1]:
+                    break
+                f.write(f',')
+            f.write(f'\n')
+        f.close()
+        print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi geodezyjnymi w bierzącym folderze')
+    elif info == '2':
+        if info == '2':
+            phi = lista[:,0]; lam = lista[:,1]; h = lista[:,2]
+            t=0
+            lista_x = []
+            lista_y = []
+            lista_z = []
+            while t < len(phi):
+                if phi[t] != 0:
+                    x, y, z = geo.phi_lam_XYZ(phi[t],lam[t],h[t])
+                    lista_x.append(x)
+                    lista_y.append(y)
+                    lista_z.append(z)
+                t = t + 1
+            lista_x = array(lista_x)
+            lista_y = array(lista_y)
+            lista_z = array(lista_z)
+            dane_wyjsc = column_stack((lista_x,lista_y,lista_z))
+            r = open(sys.argv[2],'w')
+            r.write(f'   X[m]            Y[m]            Z[m] \n')
+            r.write(f'----------------------------------------\n')
+            for i in dane_wyjsc:
+                for j in i:
+                    r.write(f'{j:.3f}')
+                    if j == i[-1]:
+                        break
+                    r.write(f',')
+                r.write(f'\n')
+            r.close()
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y, Z w bierzącym folderze')
+    elif info == '3':
+        if info == '3':
+            print('podaj x0:')
+            x0 = input(str)
+            print('podaj y0:')
+            y0 = input(str)
+            print('podaj z0:')
+            z0 = input(str)
+            x0 = float(x0)
+            y0 = float(y0)
+            z0 = float(z0)
+            X = lista[:,0]; Y = lista[:,1]; Z = lista[:,2]
+            t= 0
+            lista_x = []
+            lista_y = []
+            lista_z = []
+            while t < len(X):
+                if X[t] != 0:
+                    N, E, U = geo.transformacja_neu(X[t],Y[t],Z[t], x0, y0, z0)
+                    lista_x.append(N)
+                    lista_y.append(E)
+                    lista_z.append(U)
+                t = t + 1
+            lista_x = array(lista_x)
+            lista_y = array(lista_y)
+            lista_z = array(lista_z)
+            dane_wyjsc = column_stack((lista_x,lista_y,lista_z))
+            r = open(sys.argv[2],'w')
+            r.write(f'   N[m]            E[m]            U[m] \n')
+            r.write(f'------------------------------------\n')
+            for i in dane_wyjsc:
+                for j in i:
+                    r.write(f'{j:.3f}')
+                    if j == i[-1]:
+                        break
+                    r.write(f',')
+                r.write(f'\n')
+            r.close()
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi N, E, U w bierzącym folderze')
+    elif info == '4':
+        if info == '4':
+            phi = lista[:,0]; lam = lista[:,1]
+            t=0
+            lista_x2000 = []
+            lista_y2000 = []
+            while t < len(phi):
+                lam_0 = 21
+                nr = 7
+                if phi[t] != 0:
+                    if float(lam[t])<16.5:
+                        lam_0 = 15
+                        nr=5
+                    elif float(lam[t])<19.5:
+                        lam_0 = 18
+                        nr=6
+                    elif float(lam[t])<24.5:
+                        lam_0=21
+                        nr = 7
+                    elif float(lam[t])<25.5:
+                        lam_0 = 24
+                        nr = 8
+                    x, y = geo.Gk2000(lam[t], phi[t], lam_0, nr)
+                    lista_x2000.append(x)
+                    lista_y2000.append(y)
+                t = t + 1
+            lista_x2000 = array(lista_x2000)
+            lista_y2000 = array(lista_y2000)
+            dane_wyjsc = column_stack((lista_x2000,lista_y2000))
+            r = open(sys.argv[2],'w')
+            r.write(f'   X[m]            Y[m]  \n')
+            r.write(f'-----------------------------\n')
+            for i in dane_wyjsc:
+                for j in i:
+                    r.write(f'{j:.3f}')
+                    if j == i[-1]:
+                        break
+                    r.write(f',')
+                r.write(f'\n')
+            r.close()
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y w układzie PL-2000 w bierzącym folderze')
+    elif info == '5':
+        if info == '5':
+            phi = lista[:,0]; lam = lista[:,1]
+            t=0
+            lista_x92 = []
+            lista_y92 = []
+            while t < len(phi):
+                if phi[t] != 0:
+                    x, y = geo.Gk92(lam[t], phi[t])
+                    lista_x92.append(x)
+                    lista_y92.append(y)
+                t = t + 1
+            lista_x92 = array(lista_x92)
+            lista_y92 = array(lista_y92)
+            dane_wyjsc = column_stack((lista_x92,lista_y92))
+            r = open(sys.argv[2],'w')
+            r.write(f'   X[m]            Y[m]  \n')
+            r.write(f'----------------------------\n')
+            for i in dane_wyjsc:
+                for j in i:
+                    r.write(f'{j:.3f}')
+                    if j == i[-1]:
+                        break
+                    r.write(f',')
+                r.write(f'\n')
+            r.close()
+            print('program zapisał plik o nazwie ',sys.argv[2],' ze współrzędnymi X, Y w układzie PL-92 w bierzącym folderze')
+    else:
+        raise NotImplementedError(f"{info} - Do podanego numeru nie ma przypisanej transformacji. Ponownie uruchom program i wybierz transformację pomiędzy 1 i 5.")
